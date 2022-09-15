@@ -1,0 +1,37 @@
+name: delete image from acr
+description: Deletes the given container image from the given azure container registry.
+inputs:
+  azure-credentials:
+    description: Credentials that are used to perform the azure login.
+    required: true
+  acr-name:
+    description: Name of the azure container registry.
+    required: true
+  repository:
+    description: Name of the repository to search the tag in of the image to delete.
+    required: true
+  tag:
+    description: Tag of the image to delete.
+    required: true
+  
+runs:
+  using: composite
+  steps:
+    - name: Azure Login
+      uses: Azure/login@v1
+      with:
+        creds: ${{ inputs.azure-cedentials }}
+
+    - name: Azure CLI Action
+      uses: Azure/cli@v1
+      with:
+        inlineScript: |
+          result="$(az acr repository show-tags --name ${{ inputs.acr-name }} --repository ${{ inputs.repository }} --output tsv)"
+          for i in $result; do echo $i; done
+
+    - name: Azure Logout
+      uses: Azure/cli@v1
+      with:
+        inlineScript: |
+          az logout
+
