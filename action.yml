@@ -20,7 +20,7 @@ runs:
     - name: Azure Login
       uses: Azure/login@v1
       with:
-        creds: ${{ inputs.azure-cedentials }}
+        creds: ${{ inputs.azure-credentials }}
 
     - name: Azure CLI Action
       uses: Azure/cli@v1
