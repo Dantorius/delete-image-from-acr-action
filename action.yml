@@ -26,8 +26,8 @@ runs:
       uses: Azure/cli@v1
       with:
         inlineScript: |
-          result="$(az acr repository show-tags --name ${{ inputs.acr-name }} --repository ${{ inputs.repository }} --output tsv)"
-          for i in $result; do echo $i; done
+          repositoryTags="$(az acr repository show-tags --name ${{ inputs.acr-name }} --repository ${{ inputs.repository }} --output tsv)"
+          for i in $repositoryTags; do if [ $i = ${{ inputs.tag }}]; then echo "Tag $i found in repository; fi; done
 
     - name: Azure Logout
       uses: Azure/cli@v1
